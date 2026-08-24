@@ -2,7 +2,7 @@
 #include <fstream>
 #include <stack>
 #include <vector>
-#include "Nod.h"
+#include "Node.h"
 enum Operatori
 {
 	Adunare = 1,
@@ -67,27 +67,27 @@ std::string FormaPoloneza(std::string expresie)
 	}
 	return polish;
 }
-Nod* arboreSintactic(std::string polish)
+Node* arboreSintactic(std::string polish)
 {
-	std::stack<Nod*> noduri;
+	std::stack<Node*> noduri;
 	for (char caracter : polish)
 	{
 		if ((caracter >= '0' && caracter <= '9') || (caracter >= 'a' && caracter <= 'z'))
 		{
-			Nod* nod = new Nod;
-			nod->setOp(caracter);
+			Node* nod = new Node;
+			nod->setValue(caracter);
 			nod->setLeft(nullptr);
 			nod->setRight(nullptr);
 			noduri.push(nod);
 		}
 		else if (caracter == '-' || caracter == '+' || caracter == '*' || caracter == '/')
 		{
-			Nod* nod1 = noduri.top();
+			Node* nod1 = noduri.top();
 			noduri.pop();
-			Nod* nod2 = noduri.top();
+			Node* nod2 = noduri.top();
 			noduri.pop();
-			Nod* nodnou = new Nod;
-			nodnou->setOp(caracter);
+			Node* nodnou = new Node;
+			nodnou->setValue(caracter);
 			nodnou->setLeft(nod2);
 			nodnou->setRight(nod1);
 			noduri.push(nodnou);
@@ -109,8 +109,8 @@ int main()
 	fin.close();
 	std::string polish = FormaPoloneza(expresie);
 	//std::cout << polish;
-	Nod* arbore=arboreSintactic(polish);
-	arbore->afisareNiveluri();
+	Node* arbore=arboreSintactic(polish);
+	arbore->printByLevels();
 	int optiune;
 	do
 	{
@@ -121,7 +121,7 @@ int main()
 		switch (optiune)
 		{
 		case 1:
-			std::cout << "Evaluarea expresiei pentru arbore: " << arbore->evaluare_expresie() << std::endl;
+			std::cout << "Evaluarea expresiei pentru arbore: " << arbore->evaluate() << std::endl;
 			break;
 		case 2: break;
 		default: std::cout << "Optiune invalida. Alege optiunea 1 sau 2." << std::endl;
