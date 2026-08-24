@@ -1,5 +1,7 @@
 #include <fstream>
 #include <iostream>
+#include <map>
+#include <set>
 #include <stack>
 #include <string>
 
@@ -116,6 +118,32 @@ Node* buildExpressionTree(const std::string& postfix)
 	return nodes.top();
 }
 
+std::set<char> getVariables(const std::string& expression)
+{
+	std::set<char> variables;
+
+	for (char character : expression)
+	{
+		if (character >= 'a' && character <= 'z')
+			variables.insert(character);
+	}
+
+	return variables;
+}
+
+std::map<char, double> readVariableValues(const std::set<char>& variables)
+{
+	std::map<char, double> values;
+
+	for (char variable : variables)
+	{
+		std::cout << "Enter a value for variable " << variable << ": ";
+		std::cin >> values[variable];
+	}
+
+	return values;
+}
+
 int main()
 {
 	std::ifstream inputFile("input.txt");
@@ -139,6 +167,8 @@ int main()
 
 	expressionTree->printByLevels();
 
+	std::set<char> variables = getVariables(expression);
+
 	int option;
 
 	do
@@ -155,10 +185,16 @@ int main()
 		switch (option)
 		{
 		case 1:
+		{
+			std::map<char, double> variableValues =
+				readVariableValues(variables);
+
 			std::cout << "Expression result: "
-				<< expressionTree->evaluate()
+				<< expressionTree->evaluate(variableValues)
 				<< std::endl;
+
 			break;
+		}
 
 		case 2:
 			break;

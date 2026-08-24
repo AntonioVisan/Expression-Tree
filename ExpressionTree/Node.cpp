@@ -80,23 +80,16 @@ void Node::printByLevels()
 	}
 }
 
-double Node::evaluate()
+double Node::evaluate(const std::map<char, double>& variables) const
 {
 	if (value >= '0' && value <= '9')
 		return value - '0';
 
 	if (value >= 'a' && value <= 'z')
-	{
-		double variableValue;
+		return variables.at(value);
 
-		std::cout << "Enter a value for variable " << value << ": ";
-		std::cin >> variableValue;
-
-		return variableValue;
-	}
-
-	double leftValue = left->evaluate();
-	double rightValue = right->evaluate();
+	double leftValue = left->evaluate(variables);
+	double rightValue = right->evaluate(variables);
 
 	switch (value)
 	{

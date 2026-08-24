@@ -1,5 +1,7 @@
 #pragma once
 
+#include <map>
+
 class Node
 {
 public:
@@ -16,7 +18,7 @@ public:
 	Node* getRight() const;
 
 	void printByLevels();
-	double evaluate();
+	double evaluate(const std::map<char, double>& variables) const;
 
 private:
 	char value;
